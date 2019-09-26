@@ -39,7 +39,7 @@ def insert_query(search_query=None):
     cursor = conn.cursor()
 
     # Insert a row of data
-    cursor.execute("INSERT INTO query VALUES (NULL, ?);")
+    cursor.execute("INSERT INTO query VALUES (NULL, ?);", (search_query,))
 
     # Save (commit) the changes
     conn.commit()
@@ -79,7 +79,7 @@ def get_search_results_html(search_query=None):
         insert_query(search_query)
 
         # Format results as HTML
-        search_results = '<p>You searched for: ' + escape(search_query) + '</p>'
+        search_results = '<p>You searched for: ' + str(escape(search_query)) + '</p>'
         search_results += '<p>No results found.</p>'
         return search_results
 
@@ -97,8 +97,8 @@ def get_recent_searches_html():
     if recent_queries:
         recent_searches = '<p>Recent searches:</p><ul>'
         for query in recent_queries:
-            recent_searches += '<li><a href="/?q=' + query[0] + '">'
-            recent_searches += query[0]
+            recent_searches += '<li><a href="/?q=' + str(escape(query[0])) + '">'
+            recent_searches += str(escape(query[0]))
             recent_searches += '</a></li>'
         recent_searches += '</ul>'
         return recent_searches
